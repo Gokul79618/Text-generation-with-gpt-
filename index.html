@@ -160,22 +160,182 @@
         const typingIndicator = document.querySelector('.typing-indicator');
 
         const responses = {
-            "hello": "Hi there! How can I help you?",
-            "how are you": "I'm doing great, thanks for asking!",
-            "what is javascript": "JavaScript is a programming language used to make web pages interactive.",
-            "what is html": "HTML is the standard markup language for creating web pages.",
-            "what is css": "CSS is used to style and layout web pages.",
-            "what is your name": "I'm your friendly chatbot!",
-            "who created you": "I was created by developers to assist with your questions.",
-            "what can you do": "I can answer basic questions and help you learn web development concepts.",
-            "what is a function": "A function is a block of code designed to perform a particular task.",
-            "what is an array": "An array is a collection of items stored in a single variable.",
-            "what is a variable": "A variable is used to store data that can be used and changed later.",
-            "what is a loop": "A loop is used to repeat a block of code multiple times.",
-            "what is an object": "An object is a data structure that contains properties and methods.",
-            "thank you": "You're welcome!",
-            "bye": "Goodbye! Have a great day!",
-            "default": "Sorry, I don't have an answer for that. Try something else!"
+           import { useState } from "react";
+
+export default function App() {
+  const [n, setN] = useState("");
+  const [e, setE] = useState("");
+  const [err, setErr] = useState("");
+
+  const handleSubmit = (x) => {
+    x.preventDefault();
+    if (!n || !e) setErr("All fields required");
+    else if (!/\S+@\S+\.\S+/.test(e)) setErr("Invalid email");
+    else {
+      setErr("");
+      alert(${n}, ${e});
+    }
+      -----------------------------
+          import { useState } from "react";
+
+function App() {
+  const [amount, setAmount] = useState("");
+  const [fromCurrency, setFromCurrency] = useState("USD");
+  const [toCurrency, setToCurrency] = useState("INR");
+  const [result, setResult] = useState(null);
+
+  
+  const rates = {
+    USD: { INR: 83.0, EUR: 0.92, USD: 1 },
+    INR: { USD: 0.012, EUR: 0.011, INR: 1 },
+    EUR: { USD: 1.09, INR: 90.0, EUR: 1 },
+  };
+
+  const convert = () => {
+    if (!amount || isNaN(amount)) {
+      alert("Please enter a valid amount");
+      return;
+    }
+    const rate = rates[fromCurrency][toCurrency];
+    setResult((amount * rate).toFixed(2));
+  };
+
+  return (
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h2>💱 Simple Currency Converter</h2>
+
+      <input
+        type="number"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        placeholder="Enter amount"
+      />
+
+      <div style={{ marginTop: "10px" }}>
+        <select value={fromCurrency} onChange={(e) => setFromCurrency(e.target.value)}>
+          <option value="USD">USD</option>
+          <option value="INR">INR</option>
+          <option value="EUR">EUR</option>
+        </select>
+
+        <span style={{ margin: "0 10px" }}>to</span>
+
+        <select value={toCurrency} onChange={(e) => setToCurrency(e.target.value)}>
+          <option value="USD">USD</option>
+          <option value="INR">INR</option>
+          <option value="EUR">EUR</option>
+        </select>
+      </div>
+
+      <div style={{ marginTop: "20px" }}>
+        <button onClick={convert}>Convert</button>
+      </div>
+
+      {result !== null && (
+        <h3 style={{ marginTop: "20px" }}>
+          {amount} {fromCurrency} = {result} {toCurrency}
+        </h3>
+      )}
+    </div>
+  );
+}
+
+export default App;
+        -------------------------------
+            import React, { useState } from "react";
+
+const App = () => {
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [bmi, setBmi] = useState(null);
+  const [message, setMessage] = useState("");
+
+  const calculateBMI = (e) => {
+    e.preventDefault();
+
+    if (height === "" || weight === "") {
+      alert("Please enter both height and weight!");
+      return;
+    }
+
+    const heightInMeters = height / 100; // convert cm to meters
+    const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
+    setBmi(bmiValue);
+
+    if (bmiValue < 18.5) {
+      setMessage("You are underweight");
+    } else if (bmiValue >= 18.5 && bmiValue < 24.9) {
+      setMessage("You have a normal weight");
+    } else if (bmiValue >= 25 && bmiValue < 29.9) {
+      setMessage("You are overweight");
+    } else {
+      setMessage("You are obese");
+    }
+  };
+
+  const resetForm = () => {
+    setHeight("");
+    setWeight("");
+    setBmi(null);
+    setMessage("");
+  };
+
+  return (
+    <div style={{ textAlign: "center", marginTop: "50px" }}>
+      <h2>BMI Calculator</h2>
+
+      <form onSubmit={calculateBMI}>
+        <div>
+          <label>Height (cm): </label>
+          <input
+            type="number"
+            value={height}
+            onChange={(e) => setHeight(e.target.value)}
+            placeholder="Enter height in cm"
+          />
+        </div>
+
+        <div style={{ marginTop: "10px" }}>
+          <label>Weight (kg): </label>
+          <input
+            type="number"
+            value={weight}
+            onChange={(e) => setWeight(e.target.value)}
+            placeholder="Enter weight in kg"
+          />
+        </div>
+
+        <div style={{ marginTop: "15px" }}>
+          <button type="submit">Calculate BMI</button>
+          <button type="button" onClick={resetForm} style={{ marginLeft: "10px" }}>
+            Reset
+          </button>
+        </div>
+      </form>
+
+      {bmi && (
+        <div style={{ marginTop: "20px" }}>
+          <h3>Your BMI: {bmi}</h3>
+          <p>{message}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default App;
+        -----------
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input value={n} onChange={(a) => setN(a.target.value)} placeholder="Name" /><br/>
+      <input value={e} onChange={(a) => setE(a.target.value)} placeholder="Email" /><br/>
+      <p style={{ color: "red" }}>{err}</p>
+      <button>Submit</button>
+    </form>
+  );
+}
         };
 
         function loadChatHistory() {
@@ -302,3 +462,4 @@ COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 # Start Nginx server
 CMD ["nginx", "-g", "daemon off;"]s5ZF1    
+
